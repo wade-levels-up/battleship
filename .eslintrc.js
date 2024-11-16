@@ -3,6 +3,7 @@ module.exports = {
   plugins: ['prettier'],
   env: {
     browser: true,
+    jest: true,
   },
   globals: {
     document: 'readonly',
