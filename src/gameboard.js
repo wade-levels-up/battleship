@@ -67,4 +67,66 @@ export default class Gameboard {
       if (edges.west[0] != null) edges.west = [vertex[0] - 1, vertex[1]];
     });
   }
+
+  placeShip(type, coOrds, isVertical = false) {
+    const xMod = isVertical ? 0 : 1;
+    const yMod = isVertical ? 1 : 0;
+    const shipSizes = {
+      destroyer: 2,
+      submarine: 3,
+      cruiser: 3,
+      battleship: 4,
+      carrier: 5,
+    };
+
+    const size = shipSizes[type];
+    if (!size) {
+      throw new Error('Error: Invalid ship type');
+    }
+    // Replace our nodes array with a new array that's had it's node data properties modified to match our ship type
+    this.nodes = this.nodes.map((item) => {
+      // Always runs, this is the root position where our ship orinates from
+      if (item.vertex[0] === coOrds[0] && item.vertex[1] === coOrds[1]) {
+        return { ...item, data: type };
+      }
+      // If our ship takes up two spaces or more modify nodes in relation to root node by modifiers
+      if (size >= 2) {
+        if (
+          item.vertex[0] === coOrds[0] + xMod * 1 &&
+          item.vertex[1] === coOrds[1] + yMod * 1
+        ) {
+          return { ...item, data: type };
+        }
+      }
+      // If our ship takes up three spaces or more modify nodes in relation to root node by modifiers
+      if (size >= 3) {
+        if (
+          item.vertex[0] === coOrds[0] + xMod * 2 &&
+          item.vertex[1] === coOrds[1] + yMod * 2
+        ) {
+          return { ...item, data: type };
+        }
+      }
+      // If our ship takes up four spaces or more modify nodes in relation to root node by modifiers
+      if (size >= 4) {
+        if (
+          item.vertex[0] === coOrds[0] + xMod * 3 &&
+          item.vertex[1] === coOrds[1] + yMod * 3
+        ) {
+          return { ...item, data: type };
+        }
+      }
+      // Finally, If our ship takes up five spaces or more modify nodes in relation to root node by modifiers
+      if (size >= 5) {
+        if (
+          item.vertex[0] === coOrds[0] + xMod * 4 &&
+          item.vertex[1] === coOrds[1] + yMod * 4
+        ) {
+          return { ...item, data: type };
+        }
+      }
+
+      return item;
+    });
+  }
 }
