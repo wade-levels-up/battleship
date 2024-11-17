@@ -1,8 +1,16 @@
 import Node from './node';
+import Ship from './ship';
 
 export default class Gameboard {
   constructor() {
     this.nodes = this.initializeNodes();
+    this.ships = [
+      new Ship('destroyer', 2),
+      new Ship('submarine', 3),
+      new Ship('cruiser', 3),
+      new Ship('battleship', 4),
+      new Ship('carrier', 5),
+    ];
   }
 
   // eslint-disable-next-line class-methods-use-this
