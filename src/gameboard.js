@@ -1,3 +1,5 @@
+import Node from './node';
+
 export default class Gameboard {
   constructor() {
     this.nodes = this.initializeNodes();
@@ -8,72 +10,46 @@ export default class Gameboard {
     const nodeArr = [];
     for (let y = 0; y < 10; y += 1) {
       for (let x = 0; x < 10; x += 1) {
-        // Handle corner nodes first
+        // Create corner nodes - set invalid edges to [null]
         if (x === 0 && y === 0) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [0, 0], south: [null], west: [null] },
-          });
+          nodeArr.push(new Node([x, y], [[0, 0], [0, 0], [null], [null]]));
         } else if (x === 0 && y === 9) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [null], east: [0, 0], south: [0, 0], west: [null] },
-          });
+          nodeArr.push(new Node([x, y], [[null], [0, 0], [0, 0], [null]]));
         } else if (x === 9 && y === 0) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [null], south: [null], west: [0, 0] },
-          });
+          nodeArr.push(new Node([x, y], [[0, 0], [null], [null], [0, 0]]));
         } else if (x === 9 && y === 9) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [null], east: [null], south: [0, 0], west: [0, 0] },
-          });
+          nodeArr.push(new Node([x, y], [[null], [null], [0, 0], [0, 0]]));
         } else if (x === 0) {
-          // Then handle border nodes
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [0, 0], south: [0, 0], west: [null] },
-          });
+          // Create border nodes - set invalid edges to [null]
+          nodeArr.push(new Node([x, y], [[0, 0], [0, 0], [0, 0], [null]]));
         } else if (y === 0) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [0, 0], south: [null], west: [0, 0] },
-          });
+          nodeArr.push(new Node([x, y], [[0, 0], [0, 0], [null], [0, 0]]));
         } else if (x === 9) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [null], south: [0, 0], west: [0, 0] },
-          });
+          nodeArr.push(new Node([x, y], [[0, 0], [null], [0, 0], [0, 0]]));
         } else if (y === 9) {
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [null], east: [0, 0], south: [0, 0], west: [0, 0] },
-          });
+          nodeArr.push(new Node([x, y], [[null], [0, 0], [0, 0], [0, 0]]));
         } else {
-          // Then handle nodes not on the border
-          nodeArr.push({
-            data: 'water',
-            vertex: [0 + x, 0 + y],
-            edges: { north: [0, 0], east: [0, 0], south: [0, 0], west: [0, 0] },
-          });
+          // Create all other nodes
+          nodeArr.push(
+            new Node(
+              [x, y],
+              [
+                [0, 0],
+                [0, 0],
+                [0, 0],
+                [0, 0],
+              ],
+            ),
+          );
         }
       }
     }
-    this.setNodeEdges(nodeArr);
+    this.setValidNodeEdges(nodeArr);
     return nodeArr;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  setNodeEdges(nodes) {
+  setValidNodeEdges(nodes) {
     nodes.forEach((node) => {
       const [edges] = [node.edges];
       const [vertex] = [node.vertex];
