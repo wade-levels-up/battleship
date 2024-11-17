@@ -96,3 +96,12 @@ test(`Border nodes have null in one or more edges, otherwise it's not a border n
     }
   });
 });
+
+test(`If a node's edge isn't null, the edge must be either one of the vertex coordinates + 1 or - 1 depending on direction`, () => {
+  const gameboard1 = new Gameboard();
+  const [nodes] = [gameboard1.nodes];
+  expect(nodes[11].edges.north[1]).toBe(nodes[11].vertex[1] + 1);
+  expect(nodes[11].edges.east[0]).toBe(nodes[11].vertex[0] + 1);
+  expect(nodes[11].edges.south[1]).toBe(nodes[11].vertex[1] - 1);
+  expect(nodes[11].edges.west[0]).toBe(nodes[11].vertex[0] - 1);
+});

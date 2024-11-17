@@ -68,6 +68,19 @@ export default class Gameboard {
         }
       }
     }
+    this.setNodeEdges(nodeArr);
     return nodeArr;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  setNodeEdges(nodes) {
+    nodes.forEach((node) => {
+      const [edges] = [node.edges];
+      const [vertex] = [node.vertex];
+      if (edges.north[0] != null) edges.north = [vertex[0], vertex[1] + 1];
+      if (edges.east[0] != null) edges.east = [vertex[0] + 1, vertex[1]];
+      if (edges.south[0] != null) edges.south = [vertex[0], vertex[1] - 1];
+      if (edges.west[0] != null) edges.west = [vertex[0] - 1, vertex[1]];
+    });
   }
 }
