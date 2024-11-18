@@ -3,6 +3,7 @@ import Ship from './ship';
 
 export default class Gameboard {
   constructor() {
+    this.gameOver = false;
     this.nodes = this.initializeNodes();
     this.ships = [
       new Ship('destroyer', 2),
@@ -122,6 +123,41 @@ export default class Gameboard {
         }
         return item;
       });
+    }
+  }
+
+  receiveAttack(coOrds) {
+    if (coOrds[0] > 9 || coOrds[1] > 9 || coOrds[0] < 0 || coOrds[1] < 0) {
+      throw new Error('Error: attack is out of bounds');
+    }
+    this.nodes = this.nodes.map((node) => {
+      if (node.vertex[0] === coOrds[0] && node.vertex[1] === coOrds[1]) {
+        if (node.data === 'hit' || node.data === 'miss')
+          throw new Error('Error: Position has already been attacked');
+        if (node.data !== 'water') {
+          this.ships.forEach((ship) => {
+            if (ship.data === node.data) {
+              ship.takeHit();
+              this.checkGameOver();
+            }
+          });
+          return { ...node, data: 'hit' };
+        }
+        return { ...node, data: 'miss' };
+      }
+      return node;
+    });
+  }
+
+  checkGameOver() {
+    if (
+      this.ships[0].sunk &&
+      this.ships[1].sunk &&
+      this.ships[2].sunk &&
+      this.ships[3].sunk &&
+      this.ships[4].sunk
+    ) {
+      this.gameOver = true;
     }
   }
 }
