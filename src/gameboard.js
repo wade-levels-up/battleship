@@ -11,6 +11,13 @@ export default class Gameboard {
       new Ship('battleship', 4),
       new Ship('carrier', 5),
     ];
+    this.shipSizes = {
+      destroyer: 2,
+      submarine: 3,
+      cruiser: 3,
+      battleship: 4,
+      carrier: 5,
+    };
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -69,64 +76,52 @@ export default class Gameboard {
   }
 
   placeShip(type, coOrds, isVertical = false) {
-    const xMod = isVertical ? 0 : 1;
-    const yMod = isVertical ? 1 : 0;
-    const shipSizes = {
-      destroyer: 2,
-      submarine: 3,
-      cruiser: 3,
-      battleship: 4,
-      carrier: 5,
-    };
-
-    const size = shipSizes[type];
+    // Find the size of our ship
+    const size = this.shipSizes[type];
     if (!size) {
       throw new Error('Error: Invalid ship type');
     }
-    // Replace our nodes array with a new array that's had it's node data properties modified to match our ship type
-    this.nodes = this.nodes.map((item) => {
-      // Always runs, this is the root position where our ship orinates from
-      if (item.vertex[0] === coOrds[0] && item.vertex[1] === coOrds[1]) {
-        return { ...item, data: type };
-      }
-      // If our ship takes up two spaces or more modify nodes in relation to root node by modifiers
-      if (size >= 2) {
-        if (
-          item.vertex[0] === coOrds[0] + xMod * 1 &&
-          item.vertex[1] === coOrds[1] + yMod * 1
-        ) {
-          return { ...item, data: type };
-        }
-      }
-      // If our ship takes up three spaces or more modify nodes in relation to root node by modifiers
-      if (size >= 3) {
-        if (
-          item.vertex[0] === coOrds[0] + xMod * 2 &&
-          item.vertex[1] === coOrds[1] + yMod * 2
-        ) {
-          return { ...item, data: type };
-        }
-      }
-      // If our ship takes up four spaces or more modify nodes in relation to root node by modifiers
-      if (size >= 4) {
-        if (
-          item.vertex[0] === coOrds[0] + xMod * 3 &&
-          item.vertex[1] === coOrds[1] + yMod * 3
-        ) {
-          return { ...item, data: type };
-        }
-      }
-      // Finally, If our ship takes up five spaces or more modify nodes in relation to root node by modifiers
-      if (size >= 5) {
-        if (
-          item.vertex[0] === coOrds[0] + xMod * 4 &&
-          item.vertex[1] === coOrds[1] + yMod * 4
-        ) {
-          return { ...item, data: type };
-        }
-      }
 
-      return item;
-    });
+    // Collect future coordinates
+    const positions = [[coOrds[0], coOrds[1]]];
+    const xMod = isVertical ? 0 : 1;
+    const yMod = isVertical ? 1 : 0;
+    for (let i = 1; i < size; i += 1) {
+      if (isVertical) {
+        positions.push([coOrds[0], coOrds[1] + i]);
+      } else {
+        positions.push([coOrds[0] + i, coOrds[1]]);
+      }
+    }
+
+    // Check that all potential future positionsq exist and are 'water'/valid spots
+    let validPosition = true;
+    for (let a = 0; a < size; a += 1) {
+      if (this.nodes[`${positions[0 + a][1]}${positions[0 + a][0]}`]) {
+        if (
+          this.nodes[`${positions[0 + a][1]}${positions[0 + a][0]}`].data !==
+          'water'
+        ) {
+          validPosition = false;
+        }
+      } else {
+        validPosition = false;
+      }
+    }
+
+    // if so, map all future coordinates to type of ship
+    if (validPosition) {
+      this.nodes = this.nodes.map((item) => {
+        for (let m = 0; m < size; m += 1) {
+          if (
+            item.vertex[0] === coOrds[0] + xMod * m &&
+            item.vertex[1] === coOrds[1] + yMod * m
+          ) {
+            return { ...item, data: type };
+          }
+        }
+        return item;
+      });
+    }
   }
 }
