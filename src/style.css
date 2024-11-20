@@ -1,6 +1,8 @@
 :root {
   font-size: 16px;
   font-family: system-ui;
+  --main-font-color: white;
+  --main-background-color: black;
 }
 * {
   margin: 0px;
@@ -13,4 +15,33 @@
 body {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--main-background-color);
+  color: var(--main-font-color);
+}
+
+main {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+}
+
+.player-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 34px);
+  grid-template-rows: repeat(10, 34px);
+  gap: 1px;
+  padding: 2px;
+  border: 3px ridge rgb(228, 228, 228, 0.1);
+  border-radius: 5px;
+}
+
+.gridSquare {
+  background-color: white;
+  background: url("../assets/FPRH.gif");
+  background-size: cover;
+  border-radius: 2px;
+  border: 1px ridge rgb(232, 232, 232, 0.2);
 }
