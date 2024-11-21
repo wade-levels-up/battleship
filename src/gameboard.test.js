@@ -127,11 +127,11 @@ test('Gameboard must be able to place ships at specific coordinates', () => {
 
   // Battleship Placement -----
 
-  gameboard1.placeShip('battleship', [2, 1], false);
-  expect(gameboard1.nodes[12].data).toBe('battleship');
-  expect(gameboard1.nodes[13].data).toBe('battleship');
-  expect(gameboard1.nodes[14].data).toBe('battleship');
-  expect(gameboard1.nodes[15].data).toBe('battleship');
+  gameboard1.placeShip('battleship', [0, 0], false);
+  expect(gameboard1.nodes[0].data).toBe('battleship');
+  expect(gameboard1.nodes[1].data).toBe('battleship');
+  expect(gameboard1.nodes[2].data).toBe('battleship');
+  expect(gameboard1.nodes[3].data).toBe('battleship');
 
   // Carrier Placement -----
   gameboard1.placeShip('carrier', [6, 4], true);

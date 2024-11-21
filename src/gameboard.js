@@ -98,10 +98,13 @@ export default class Gameboard {
     // Check that all potential future positionsq exist and are 'water'/valid spots
     let validPosition = true;
     for (let a = 0; a < size; a += 1) {
-      if (this.nodes[`${positions[0 + a][1]}${positions[0 + a][0]}`]) {
+      if (
+        this.nodes[parseInt(`${positions[0 + a][1]}${positions[0 + a][0]}`, 10)]
+      ) {
         if (
-          this.nodes[`${positions[0 + a][1]}${positions[0 + a][0]}`].data !==
-          'water'
+          this.nodes[
+            parseInt(`${positions[0 + a][1]}${positions[0 + a][0]}`, 10)
+          ].data !== 'water'
         ) {
           validPosition = false;
         }
