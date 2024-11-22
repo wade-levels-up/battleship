@@ -1,8 +1,9 @@
 :root {
-  font-size: 16px;
+  font-size: calc(16px + 0.5vh);
   font-family: system-ui;
   --main-font-color: white;
   --main-background-color: black;
+  font-family: Times, serif, system-ui;
 }
 * {
   margin: 0px;
@@ -19,7 +20,19 @@ body {
   flex-direction: column;
   align-items: center;
   background-color: var(--main-background-color);
+  background: url(../assets/pavel-neznanov-CKlNWLfRz0I-unsplash.jpg);
+  background-size: cover;
+  background-position: center;
+  padding: 5px;
+}
+
+header {
+  background-color: rgb(0, 0, 0, 0.7);
   color: var(--main-font-color);
+  border-radius: 5px;
+  width: 100%;
+  margin: 5px;
+  text-align: center;
 }
 
 main {
@@ -28,6 +41,20 @@ main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: rgb(0, 0, 0, 0.7);
+  color: var(--main-font-color);
+  padding: 5px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+footer {
+  text-align: center;
+  width: 100%;
+  background-color: rgb(0, 0, 0, 0.7);
+  color: var(--main-font-color);
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .grid-container {
@@ -40,17 +67,34 @@ main {
 
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(10, 34px);
-  grid-template-rows: repeat(10, 34px);
+  grid-template-columns: repeat(10, 9vw);
+  grid-template-rows: repeat(10, 9vw);
   gap: 1px;
   padding: 2px;
   border: 3px ridge rgb(228, 228, 228, 0.1);
-  border-radius: 5px;
+  border-radius: 25px;
   opacity: 0;
   z-index: -1;
   position: absolute;
   background-color: var(--main-background-color);
   transition: 250ms linear;
+  overflow: hidden;
+}
+
+.computer-grid {
+  display: grid;
+  grid-template-columns: repeat(10, 9vw);
+  grid-template-rows: repeat(10, 9vw);
+  gap: 1px;
+  padding: 2px;
+  border: 3px ridge rgb(228, 228, 228, 0.1);
+  border-radius: 25px;
+  opacity: 0;
+  z-index: -1;
+  position: relative;
+  background-color: var(--main-background-color);
+  transition: 250ms linear;
+  overflow: hidden;
 }
 
 .gridSquare {
@@ -61,43 +105,13 @@ main {
   background: url("../assets/FPRH.gif");
   background-size: cover;
   border-radius: 1px;
-  border: 1px ridge rgb(232, 232, 232, 0.2);
+  border: 1px solid rgb(232, 232, 232, 0.2);
   transition: 500ms linear;
   font-size: 0.5rem;
   cursor: crosshair;
   text-wrap: pretty;
   hyphens: auto;
   font-weight: 800;
-}
-
-.occupied {
-  filter:hue-rotate(220deg);
-  transition: 500ms linear;
-}
-
-.hit {
-  filter:hue-rotate(140deg);
-  transition: 500ms linear;
-}
-
-.miss {
-  filter:grayscale();
-  transition: 500ms linear;
-}
-
-.computer-grid {
-  display: grid;
-  grid-template-columns: repeat(10, 34px);
-  grid-template-rows: repeat(10, 34px);
-  gap: 1px;
-  padding: 2px;
-  border: 3px ridge rgb(228, 228, 228, 0.1);
-  border-radius: 5px;
-  opacity: 0;
-  z-index: -1;
-  position: relative;
-  background-color: var(--main-background-color);
-  transition: 250ms linear;
 }
 
 footer {
@@ -107,11 +121,23 @@ footer {
 }
 
 .commentary {
-  height: 30px;
+  height: 2rem;
+  font-size: 1rem;
 }
 .screenMode {
-  height: 30px;
+  display: flex;
+  height: 2rem;
   width: 100%;
-  text-align: center;
-  font-size: 12px;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.7rem;
+}
+
+.changeView {
+  padding: 3px 30px 3px 30px;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  background: var(--main-background-color);
+  color: var(--main-font-color);
+  border: 3px outset black;
 }
