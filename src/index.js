@@ -8,6 +8,7 @@ let player2;
 let tries = 1;
 let activeView = 'Enemy Waters';
 
+const body = document.querySelector('body');
 const commentary = document.querySelector('.commentary');
 const screen = document.querySelector('.screenMode');
 const playerGrid = document.querySelector('.player-grid');
@@ -82,7 +83,21 @@ function playRound() {
     try {
       // Try a random attack coordinate on the players board
       player1.gameboard.receiveAttack(randomAttackCoOrds);
-
+      // Animate shake on hit
+      player1.gameboard.nodes.forEach((node) => {
+        if (
+          node.vertex[0] === randomAttackCoOrds[0] &&
+          node.vertex[1] === randomAttackCoOrds[1]
+        ) {
+          if (node.data === 'hit') {
+            body.style.animation = 'horizontal-shaking 0.20s';
+            navigator.vibrate(200);
+            setTimeout(() => {
+              body.style.animation = 'none';
+            }, 400);
+          }
+        }
+      });
       // Clear the player's grid and re-render it
       playerGrid.innerHTML = '';
       renderGridPlayer(player1.gameboard.nodes, playerGrid);
@@ -123,6 +138,21 @@ computerGrid.addEventListener('click', (e) => {
         +e.target.dataset.vertex[0],
         +e.target.dataset.vertex[2],
       ]);
+      // Animate shake on hit
+      player2.gameboard.nodes.forEach((node) => {
+        if (
+          node.vertex[0] === +e.target.dataset.vertex[0] &&
+          node.vertex[1] === +e.target.dataset.vertex[2]
+        ) {
+          if (node.data === 'hit') {
+            body.style.animation = 'horizontal-shaking 0.20s';
+            navigator.vibrate(200);
+            setTimeout(() => {
+              body.style.animation = 'none';
+            }, 400);
+          }
+        }
+      });
       computerGrid.innerHTML = '';
       renderGridComputer(player2.gameboard.nodes, computerGrid, player2);
       if (player2.gameboard.gameOver) {
