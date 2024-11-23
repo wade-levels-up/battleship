@@ -84,3 +84,15 @@ export function renderGridComputer(nodes, parent) {
     }
   }
 }
+
+export function revealDOMGameboard(gameboardContainer) {
+  const gameboardElement = gameboardContainer;
+  gameboardElement.style.opacity = '100';
+  gameboardElement.style.zIndex = 0;
+}
+
+export function hideDOMGameboard(gameboardContainer) {
+  const gameboardElement = gameboardContainer;
+  gameboardElement.style.opacity = '0';
+  gameboardElement.style.zIndex = -1;
+}

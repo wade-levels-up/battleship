@@ -1,6 +1,11 @@
 import './style.css';
 import Player from './player';
-import { renderGridPlayer, renderGridComputer } from './renderer';
+import {
+  renderGridPlayer,
+  renderGridComputer,
+  revealDOMGameboard,
+  hideDOMGameboard,
+} from './renderer';
 
 document.addEventListener('DOMContentLoaded', () => {
   let player1;
@@ -10,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let activeView = 'Enemy Waters';
 
   const body = document.querySelector('body');
+  const reset = document.querySelector('.reset');
   const movesMade = document.querySelector('.movesMade span');
   const commentary = document.querySelector('.commentary');
   const screen = document.querySelector('.screenMode');
@@ -18,17 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const switchView = document.querySelector('.changeView');
   playerGrid.setAttribute('data-player', 'player');
   computerGrid.setAttribute('data-player', 'computer');
+  playerGrid.addEventListener('pointerdown', () => {
+    commentary.style.animation = 'horizontal-shaking 0.50s';
+  });
 
-  function revealDOMGameboard(gameboardContainer) {
-    const gameboardElement = gameboardContainer;
-    gameboardElement.style.opacity = '100';
-    gameboardElement.style.zIndex = 0;
-  }
-
-  function hideDOMGameboard(gameboardContainer) {
-    const gameboardElement = gameboardContainer;
-    gameboardElement.style.opacity = '0';
-    gameboardElement.style.zIndex = -1;
+  function checkForGameOver() {
+    if (player1.gameboard.gameOver) {
+      commentary.innerText = `You Lose!`;
+      return;
+    }
+    if (player2.gameboard.gameOver) {
+      commentary.innerText = `You Win!`;
+    }
   }
 
   function switchViewport() {
@@ -48,8 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
       commentary.innerText = 'Choose a position to attack';
     }
   }
-
-  switchView.addEventListener('pointerdown', switchViewport);
 
   function setupNewGame() {
     player1 = new Player('real', true);
@@ -73,6 +78,18 @@ document.addEventListener('DOMContentLoaded', () => {
     renderGridPlayer(player1.gameboard.nodes, playerGrid);
     renderGridComputer(player2.gameboard.nodes, computerGrid);
   }
+
+  switchView.addEventListener('pointerdown', switchViewport);
+  reset.addEventListener('pointerdown', () => {
+    setupNewGame();
+    revealDOMGameboard(playerGrid);
+    hideDOMGameboard(computerGrid);
+    commentary.style.color = 'white';
+    commentary.style.animation = 'none';
+    commentary.innerText = `Switch view to choose attack`;
+    screen.innerText = 'View: Your Fleet';
+    activeView = 'Your Fleet';
+  });
 
   function playRound() {
     // If it's the computer's turn..
@@ -105,12 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
         // Clear the player's grid and re-render it
         playerGrid.innerHTML = '';
         renderGridPlayer(player1.gameboard.nodes, playerGrid);
-
+        checkForGameOver();
         // Set a delay that hides the players grid, reveals the computers grid and updates the commentary + view
-        if (player1.gameboard.gameOver) {
-          commentary.innerText = `You Lose!`;
-          return;
-        }
+
         setTimeout(() => {
           hideDOMGameboard(playerGrid);
           revealDOMGameboard(computerGrid);
@@ -169,10 +183,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       computerGrid.innerHTML = '';
       renderGridComputer(player2.gameboard.nodes, computerGrid, player2);
-      if (player2.gameboard.gameOver) {
-        commentary.innerText = `You Win!`;
-        return;
-      }
+      checkForGameOver();
+
       setTimeout(() => {
         hideDOMGameboard(computerGrid);
         revealDOMGameboard(playerGrid);
