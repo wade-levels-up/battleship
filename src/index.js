@@ -31,11 +31,13 @@ document.addEventListener('DOMContentLoaded', () => {
   function checkForGameOver() {
     if (player1.gameboard.gameOver) {
       commentary.innerText = `You Lose!`;
-      return;
+      return true;
     }
     if (player2.gameboard.gameOver) {
       commentary.innerText = `You Win!`;
+      return true;
     }
+    return false;
   }
 
   function switchViewport() {
@@ -123,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
         playerGrid.innerHTML = '';
         renderGridPlayer(player1.gameboard.nodes, playerGrid);
         checkForGameOver();
+        if (checkForGameOver()) return;
         // Set a delay that hides the players grid, reveals the computers grid and updates the commentary + view
 
         setTimeout(() => {
@@ -184,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
       computerGrid.innerHTML = '';
       renderGridComputer(player2.gameboard.nodes, computerGrid, player2);
       checkForGameOver();
+      if (checkForGameOver()) return;
 
       setTimeout(() => {
         hideDOMGameboard(computerGrid);
