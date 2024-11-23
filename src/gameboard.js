@@ -113,6 +113,10 @@ export default class Gameboard {
       }
     }
 
+    if (!validPosition) {
+      throw new Error('Error: Invalid position');
+    }
+
     // if so, map all future coordinates to type of ship
     if (validPosition) {
       this.nodes = this.nodes.map((item) => {
@@ -127,6 +131,29 @@ export default class Gameboard {
         return item;
       });
     }
+  }
+
+  placeAllShips() {
+    this.ships.forEach((ship) => {
+      let running = true;
+      while (running) {
+        const randX = Math.floor(Math.random() * 10);
+        const randY = Math.floor(Math.random() * 10);
+        let randOneTwo = Math.floor(Math.random() * 2);
+        if (randOneTwo === 1) {
+          randOneTwo = true;
+        } else {
+          randOneTwo = false;
+        }
+        try {
+          this.placeShip(ship.data, [randX, randY], randOneTwo);
+          running = false;
+        } catch (error) {
+          console.log(error);
+          running = true;
+        }
+      }
+    });
   }
 
   receiveAttack(coOrds) {

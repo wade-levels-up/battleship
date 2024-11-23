@@ -31,6 +31,8 @@ function hideDOMGameboard(gameboardContainer) {
 }
 
 switchView.addEventListener('click', () => {
+  commentary.style.color = 'white';
+  commentary.style.animation = 'none';
   if (activeView === 'Enemy Waters') {
     activeView = 'Your Fleet';
     revealDOMGameboard(playerGrid);
@@ -56,18 +58,10 @@ function setupNewGame() {
   hideDOMGameboard(playerGrid);
 
   // Setup some default positions for player ships
-  player1.gameboard.placeShip('carrier', [0, 5], true);
-  player1.gameboard.placeShip('destroyer', [1, 3]);
-  player1.gameboard.placeShip('submarine', [2, 5]);
-  player1.gameboard.placeShip('cruiser', [7, 5], true);
-  player1.gameboard.placeShip('battleship', [0, 0]);
+  player1.gameboard.placeAllShips();
 
   // Setup some default positions for computer ships
-  player2.gameboard.placeShip('carrier', [1, 5], true);
-  player2.gameboard.placeShip('destroyer', [7, 3]);
-  player2.gameboard.placeShip('submarine', [3, 5]);
-  player2.gameboard.placeShip('cruiser', [7, 5], true);
-  player2.gameboard.placeShip('battleship', [0, 3]);
+  player2.gameboard.placeAllShips();
 
   // Clear DOM elements then render gameboard nodes
   movesMade.innerText = `${player1.movesMade}`;
@@ -137,14 +131,24 @@ computerGrid.addEventListener('pointerdown', (e) => {
   if (tries) {
     tries -= 1;
     commentary.innerText = '';
+    commentary.style.color = 'white';
+    commentary.style.animation = 'none';
     player1.myTurn = false;
     player2.myTurn = true;
     player1.incrementMoves();
     movesMade.innerText = `${player1.movesMade}`;
-    player2.gameboard.receiveAttack([
-      +e.target.dataset.vertex[0],
-      +e.target.dataset.vertex[2],
-    ]);
+    try {
+      player2.gameboard.receiveAttack([
+        +e.target.dataset.vertex[0],
+        +e.target.dataset.vertex[2],
+      ]);
+    } catch (error) {
+      commentary.innerText = 'Invalid move: Please choose again';
+      commentary.style.color = 'red';
+      commentary.style.animation = 'horizontal-shaking 0.20s';
+      tries = 1;
+      return;
+    }
     // Animate shake on hit
     player2.gameboard.nodes.forEach((node) => {
       if (

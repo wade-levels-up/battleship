@@ -13,6 +13,14 @@
   text-decoration: none;
 }
 
+a {
+  color: rgb(98, 137, 165);
+}
+
+a:visited {
+  color: chartreuse;
+}
+
 body {
   width: 100vw;
   height: 100vh;
@@ -24,6 +32,7 @@ body {
   background-size: cover;
   background-position: center;
   padding: 5px;
+  max-width: 1000px;
 }
 
 header {
@@ -71,8 +80,8 @@ footer {
   grid-template-rows: repeat(10, 9vw);
   gap: 1px;
   padding: 2px;
-  border: 3px ridge rgb(228, 228, 228, 0.1);
-  border-radius: 25px;
+  border: 5px outset rgb(228, 228, 228, 0.5);
+  border-radius: 5px;
   opacity: 0;
   z-index: -1;
   position: absolute;
@@ -87,8 +96,8 @@ footer {
   grid-template-rows: repeat(10, 9vw);
   gap: 1px;
   padding: 2px;
-  border: 3px ridge rgb(228, 228, 228, 0.1);
-  border-radius: 25px;
+  border: 5px outset rgb(228, 228, 228, 0.5);
+  border-radius: 5px;
   opacity: 0;
   z-index: -1;
   position: relative;
@@ -115,7 +124,7 @@ footer {
 }
 
 footer {
-  font-size: 10px;
+  font-size: 0.8rem;
   margin: 5px;
   padding: 5px;
 }

@@ -86,6 +86,7 @@ export default class Player {
   getAttackCoOrds() {
     let attackX = null;
     let attackY = null;
+
     if (this.aShipHasBeenHitTwice()) {
       const trueShotCoOrds = this.huntWeakenedShip();
       [attackX, attackY] = [trueShotCoOrds[0], trueShotCoOrds[1]];
@@ -203,8 +204,8 @@ export default class Player {
       }
     }
 
-    if (this.movesMade > 20) {
-      const randInt = Math.floor(Math.random() * 2 + 1);
+    if (this.movesMade > 40) {
+      const randInt = Math.floor(Math.random() * 5 + 1);
       if (randInt === 1) {
         const coOrds = this.getCoordsOfARandomShip();
         [attackX, attackY] = [coOrds[0], coOrds[1]];
