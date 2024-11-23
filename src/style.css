@@ -142,6 +142,11 @@ footer {
   border: 3px outset black;
 }
 
+.movesMade {
+  font-size: 0.7rem;
+  margin-top: 15px;
+}
+
 @keyframes horizontal-shaking {
   0% { transform: translateX(0) }
   25% { transform: translateX(5px) }

@@ -9,6 +9,7 @@ let tries = 1;
 let activeView = 'Enemy Waters';
 
 const body = document.querySelector('body');
+const movesMade = document.querySelector('.movesMade span');
 const commentary = document.querySelector('.commentary');
 const screen = document.querySelector('.screenMode');
 const playerGrid = document.querySelector('.player-grid');
@@ -69,6 +70,7 @@ function setupNewGame() {
   player2.gameboard.placeShip('battleship', [0, 3]);
 
   // Clear DOM elements then render gameboard nodes
+  movesMade.innerText = `${player1.movesMade}`;
   playerGrid.innerHTML = '';
   computerGrid.innerHTML = '';
   renderGridPlayer(player1.gameboard.nodes, playerGrid);
@@ -82,6 +84,7 @@ function playRound() {
     let attackCoOrds = player1.getAttackCoOrds();
     try {
       // Try a random attack coordinate on the players board
+      player2.incrementMoves();
       player1.gameboard.receiveAttack(attackCoOrds);
       // Animate shake on hit
       player1.gameboard.nodes.forEach((node) => {
@@ -93,14 +96,12 @@ function playRound() {
           if (node.data === 'hit') {
             player1.resultOfLastMove = 'hit';
             player1.attackMode = 'destroy';
+            player1.lastHitPosition = node;
             body.style.animation = 'horizontal-shaking 0.20s';
             navigator.vibrate(200);
             setTimeout(() => {
               body.style.animation = 'none';
             }, 400);
-          } else {
-            player1.resultOfLastMove = 'miss';
-            player1.attackMode = 'random';
           }
         }
       });
@@ -132,51 +133,48 @@ function playRound() {
 }
 
 // Add event listener to computer's grid for clicking / attacking
-computerGrid.addEventListener('click', (e) => {
-  try {
-    if (tries) {
-      tries -= 1;
-      commentary.innerText = '';
-      player1.myTurn = false;
-      player2.myTurn = true;
-      player2.gameboard.receiveAttack([
-        +e.target.dataset.vertex[0],
-        +e.target.dataset.vertex[2],
-      ]);
-      // Animate shake on hit
-      player2.gameboard.nodes.forEach((node) => {
-        if (
-          node.vertex[0] === +e.target.dataset.vertex[0] &&
-          node.vertex[1] === +e.target.dataset.vertex[2]
-        ) {
-          if (node.data === 'hit') {
-            body.style.animation = 'horizontal-shaking 0.20s';
-            navigator.vibrate(200);
-            setTimeout(() => {
-              body.style.animation = 'none';
-            }, 400);
-          }
+computerGrid.addEventListener('pointerdown', (e) => {
+  if (tries) {
+    tries -= 1;
+    commentary.innerText = '';
+    player1.myTurn = false;
+    player2.myTurn = true;
+    player1.incrementMoves();
+    movesMade.innerText = `${player1.movesMade}`;
+    player2.gameboard.receiveAttack([
+      +e.target.dataset.vertex[0],
+      +e.target.dataset.vertex[2],
+    ]);
+    // Animate shake on hit
+    player2.gameboard.nodes.forEach((node) => {
+      if (
+        node.vertex[0] === +e.target.dataset.vertex[0] &&
+        node.vertex[1] === +e.target.dataset.vertex[2]
+      ) {
+        if (node.data === 'hit') {
+          body.style.animation = 'horizontal-shaking 0.20s';
+          navigator.vibrate(200);
+          setTimeout(() => {
+            body.style.animation = 'none';
+          }, 400);
         }
-      });
-      computerGrid.innerHTML = '';
-      renderGridComputer(player2.gameboard.nodes, computerGrid, player2);
-      if (player2.gameboard.gameOver) {
-        commentary.innerText = `You Win!`;
-        return;
       }
-      setTimeout(() => {
-        hideDOMGameboard(computerGrid);
-        revealDOMGameboard(playerGrid);
-        screen.innerText = 'View: Your Fleet';
-      }, 500);
-
-      setTimeout(() => {
-        playRound();
-      }, 1000);
+    });
+    computerGrid.innerHTML = '';
+    renderGridComputer(player2.gameboard.nodes, computerGrid, player2);
+    if (player2.gameboard.gameOver) {
+      commentary.innerText = `You Win!`;
+      return;
     }
-  } catch (error) {
-    alert('Invalid position, try again');
-    tries += 1;
+    setTimeout(() => {
+      hideDOMGameboard(computerGrid);
+      revealDOMGameboard(playerGrid);
+      screen.innerText = 'View: Your Fleet';
+    }, 500);
+
+    setTimeout(() => {
+      playRound();
+    }, 1000);
   }
 });
 
