@@ -32,7 +32,6 @@ body {
   background-size: cover;
   background-position: center;
   padding: 5px;
-  max-width: 1000px;
 }
 
 header {
@@ -76,8 +75,8 @@ footer {
 
 .player-grid {
   display: grid;
-  grid-template-columns: repeat(10, 9vw);
-  grid-template-rows: repeat(10, 9vw);
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
   gap: 1px;
   padding: 2px;
   border: 5px outset rgb(228, 228, 228, 0.5);
@@ -92,8 +91,8 @@ footer {
 
 .computer-grid {
   display: grid;
-  grid-template-columns: repeat(10, 9vw);
-  grid-template-rows: repeat(10, 9vw);
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
   gap: 1px;
   padding: 2px;
   border: 5px outset rgb(228, 228, 228, 0.5);
@@ -149,6 +148,7 @@ footer {
   background: var(--main-background-color);
   color: var(--main-font-color);
   border: 3px outset black;
+  outline: 1px solid rgb(255, 255, 255, 0.25);
 }
 
 .movesMade {
@@ -163,3 +163,100 @@ footer {
   75% { transform: translateX(5px) }
   100% { transform: translateX(0) }
  }
+
+ @media screen and (min-width: 600px) {
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-background-color);
+    background: url(../assets/pavel-neznanov-CKlNWLfRz0I-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+    padding: 10px;
+  }
+
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+    gap: 1px;
+    padding: 2px;
+    border: 5px outset rgb(228, 228, 228, 0.5);
+    border-radius: 5px;
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    background-color: var(--main-background-color);
+    transition: 250ms linear;
+    overflow: hidden;
+  }
+  
+  .computer-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 50px);
+    grid-template-rows: repeat(10, 50px);
+    gap: 1px;
+    padding: 2px;
+    border: 5px outset rgb(228, 228, 228, 0.5);
+    border-radius: 5px;
+    opacity: 0;
+    z-index: -1;
+    position: relative;
+    background-color: var(--main-background-color);
+    transition: 250ms linear;
+    overflow: hidden;
+  }
+}
+
+ @media screen and (min-width: 860px) {
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--main-background-color);
+    background: url(../assets/pavel-neznanov-CKlNWLfRz0I-unsplash.jpg);
+    background-size: cover;
+    background-position: center;
+    padding: 20px;
+  }
+
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 80px);
+    grid-template-rows: repeat(10, 80px);
+    gap: 1px;
+    padding: 2px;
+    border: 5px outset rgb(228, 228, 228, 0.5);
+    border-radius: 5px;
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    background-color: var(--main-background-color);
+    transition: 250ms linear;
+    overflow: hidden;
+  }
+  
+  .computer-grid {
+    display: grid;
+    grid-template-columns: repeat(10, 80px);
+    grid-template-rows: repeat(10, 80px);
+    gap: 1px;
+    padding: 2px;
+    border: 5px outset rgb(228, 228, 228, 0.5);
+    border-radius: 5px;
+    opacity: 0;
+    z-index: -1;
+    position: relative;
+    background-color: var(--main-background-color);
+    transition: 250ms linear;
+    overflow: hidden;
+  }
+}
+
