@@ -79,22 +79,28 @@ function playRound() {
   // If it's the computer's turn..
   if (player2.myTurn) {
     tries += 1;
-    let randomAttackCoOrds = player2.getRandAttackCoOrds();
+    let attackCoOrds = player1.getAttackCoOrds();
     try {
       // Try a random attack coordinate on the players board
-      player1.gameboard.receiveAttack(randomAttackCoOrds);
+      player1.gameboard.receiveAttack(attackCoOrds);
       // Animate shake on hit
       player1.gameboard.nodes.forEach((node) => {
         if (
-          node.vertex[0] === randomAttackCoOrds[0] &&
-          node.vertex[1] === randomAttackCoOrds[1]
+          node.vertex[0] === attackCoOrds[0] &&
+          node.vertex[1] === attackCoOrds[1]
         ) {
+          player1.lastAttackedPosition = node;
           if (node.data === 'hit') {
+            player1.resultOfLastMove = 'hit';
+            player1.attackMode = 'destroy';
             body.style.animation = 'horizontal-shaking 0.20s';
             navigator.vibrate(200);
             setTimeout(() => {
               body.style.animation = 'none';
             }, 400);
+          } else {
+            player1.resultOfLastMove = 'miss';
+            player1.attackMode = 'random';
           }
         }
       });
@@ -105,7 +111,6 @@ function playRound() {
       // Set a delay that hides the players grid, reveals the computers grid and updates the commentary + view
       if (player1.gameboard.gameOver) {
         commentary.innerText = `You Lose!`;
-        // setupNewGame();
         return;
       }
       setTimeout(() => {
@@ -120,7 +125,7 @@ function playRound() {
       player1.myTurn = true;
     } catch (error) {
       // If the receiveAttack function throws an error because the attack is invalid, re-run the playRound function and set new random coordinates
-      randomAttackCoOrds = player2.getRandAttackCoOrds();
+      attackCoOrds = player2.getAttackCoOrds();
       playRound();
     }
   }
