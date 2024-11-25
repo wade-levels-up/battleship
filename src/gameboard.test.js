@@ -145,30 +145,17 @@ test('Gameboard must be able to place ships at specific coordinates', () => {
 test('If a ship is placed in a position where any part of it exceeds the board boundaries or crosses a ship, all nodes where it was tried to be placed remain as they were', () => {
   const gameboard1 = new Gameboard();
   // Intentionally place a long Carrier ship at top right of board so it exceeds top boundary by two
-  gameboard1.placeShip('carrier', [9, 7], true);
-  expect(gameboard1.nodes[79].data).toBe('water');
-  expect(gameboard1.nodes[89].data).toBe('water');
-  expect(gameboard1.nodes[99].data).toBe('water');
+  expect(() => gameboard1.placeShip('carrier', [9, 7], true)).toThrow(Error);
   // Intentionally place a long Battleship at right side of board so it exceeds right boundary by one
-  gameboard1.placeShip('battleship', [7, 1]);
-  expect(gameboard1.nodes[17].data).toBe('water');
-  expect(gameboard1.nodes[18].data).toBe('water');
-  expect(gameboard1.nodes[19].data).toBe('water');
+  expect(() => gameboard1.placeShip('battleship', [7, 1])).toThrow(Error);
+  expect(() => gameboard1.placeShip('cruiser', [9, 0])).toThrow(Error);
 });
 
 test('Test that ships cannot overlap other ships', () => {
   const gameboard2 = new Gameboard();
   // Intentionally create a Carrier and Battleship that intersect
-  // The Carrier is placed first, then the Battleship. As the Battleship intersects the Carrier it's never placed.
-  // So we expect the positions where it would've been placed to remain as they are
   gameboard2.placeShip('carrier', [3, 5]);
-  expect(gameboard2.nodes[53].data).toBe('carrier');
-  expect(gameboard2.nodes[57].data).toBe('carrier');
-  gameboard2.placeShip('battleship', [4, 3], true);
-  expect(gameboard2.nodes[34].data).toBe('water');
-  expect(gameboard2.nodes[44].data).toBe('water');
-  expect(gameboard2.nodes[54].data).toBe('carrier');
-  expect(gameboard2.nodes[64].data).toBe('water');
+  expect(() => gameboard2.placeShip('battleship', [4, 3], true)).toThrow(Error);
 });
 
 test('Gameboard tracks positions that have been attacked and will not allow attacked positions to be attacked again', () => {

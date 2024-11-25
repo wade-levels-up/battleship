@@ -95,20 +95,17 @@ export default class Gameboard {
       }
     }
 
-    // Check that all potential future positionsq exist and are 'water'/valid spots
+    // Check that all potential future positions exist and are 'water'/valid spots
     let validPosition = true;
     for (let a = 0; a < size; a += 1) {
+      const [x, y] = positions[a];
       if (
-        this.nodes[parseInt(`${positions[0 + a][1]}${positions[0 + a][0]}`, 10)]
+        x < 0 ||
+        x > 9 ||
+        y < 0 ||
+        y > 9 ||
+        this.nodes[y * 10 + x].data !== 'water'
       ) {
-        if (
-          this.nodes[
-            parseInt(`${positions[0 + a][1]}${positions[0 + a][0]}`, 10)
-          ].data !== 'water'
-        ) {
-          validPosition = false;
-        }
-      } else {
         validPosition = false;
       }
     }
