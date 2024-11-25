@@ -20,7 +20,21 @@ export function renderGridPlayer(nodes, parent) {
       gridSquare.style.filter = 'none';
 
       if (gridSquare.dataset.data !== 'water') {
-        gridSquare.innerText = gridSquare.dataset.data;
+        if (gridSquare.dataset.data === 'destroyer') {
+          gridSquare.innerText = 'Destr';
+        }
+        if (gridSquare.dataset.data === 'cruiser') {
+          gridSquare.innerText = 'Cruis';
+        }
+        if (gridSquare.dataset.data === 'submarine') {
+          gridSquare.innerText = 'Sub';
+        }
+        if (gridSquare.dataset.data === 'battleship') {
+          gridSquare.innerText = 'BShip';
+        }
+        if (gridSquare.dataset.data === 'carrier') {
+          gridSquare.innerText = 'Carri';
+        }
         gridSquare.style.filter = 'hue-rotate(200deg)';
       }
       if (gridSquare.dataset.data === 'hit') {
@@ -32,16 +46,6 @@ export function renderGridPlayer(nodes, parent) {
         gridSquare.style.filter = 'grayscale()';
         gridSquare.style.opacity = '50%';
         gridSquare.innerText = 'MISS';
-      }
-
-      if (
-        gridSquare.dataset.data === 'destroyer' ||
-        gridSquare.dataset.data === 'cruiser' ||
-        gridSquare.dataset.data === 'submarine' ||
-        gridSquare.dataset.data === 'battleship' ||
-        gridSquare.dataset.data === 'carrier'
-      ) {
-        gridSquare.innerText = gridSquare.dataset.data;
       }
 
       parent.appendChild(gridSquare);
