@@ -48,7 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
       revealDOMGameboard(playerGrid);
       hideDOMGameboard(computerGrid);
       screen.innerText = 'View: Your Fleet';
-      commentary.innerText = `Switch view to choose attack`;
+      if (player2.myTurn === true) {
+        commentary.innerText = ``;
+      } else {
+        commentary.innerText = `Switch view to choose attack`;
+      }
     } else {
       activeView = 'Enemy Waters';
       revealDOMGameboard(computerGrid);
@@ -77,11 +81,18 @@ document.addEventListener('DOMContentLoaded', () => {
     movesMade.innerText = `${player1.movesMade}`;
     playerGrid.innerHTML = '';
     computerGrid.innerHTML = '';
+
     renderGridPlayer(player1.gameboard.nodes, playerGrid);
     renderGridComputer(player2.gameboard.nodes, computerGrid);
   }
 
-  switchView.addEventListener('pointerdown', switchViewport);
+  switchView.addEventListener('pointerdown', () => {
+    if (checkForGameOver()) {
+      return;
+    }
+    switchViewport();
+  });
+
   reset.addEventListener('pointerdown', () => {
     setupNewGame();
     revealDOMGameboard(playerGrid);
@@ -129,8 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Set a delay that hides the players grid, reveals the computers grid and updates the commentary + view
 
         setTimeout(() => {
-          hideDOMGameboard(playerGrid);
-          revealDOMGameboard(computerGrid);
+          switchViewport();
           commentary.innerText = 'Choose a position to attack';
           screen.innerText = 'View: Enemy Waters';
         }, 600);
@@ -190,8 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (checkForGameOver()) return;
 
       setTimeout(() => {
-        hideDOMGameboard(computerGrid);
-        revealDOMGameboard(playerGrid);
+        switchViewport();
         screen.innerText = 'View: Your Fleet';
       }, 500);
 
