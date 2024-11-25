@@ -186,7 +186,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ) {
           if (node.data === 'hit') {
             body.style.animation = 'horizontal-shaking 0.20s';
-            navigator.vibrate(200);
             setTimeout(() => {
               body.style.animation = 'none';
             }, 400);
